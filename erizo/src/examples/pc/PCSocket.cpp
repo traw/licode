@@ -15,7 +15,7 @@ using boost::asio::ip::tcp;
 const char kByeMessage[] = "BYE";
 
 PC::PC(const std::string &name) :
-				callback_(NULL), state_(NOT_CONNECTED), my_id_(-1), isSending(false) {
+				callback_(NULL), state_(NOT_CONNECTED), my_id_(), isSending(false) {
 
 	ioservice_ = new boost::asio::io_service;
 	resolver_ = new tcp::resolver(*ioservice_);
@@ -31,12 +31,12 @@ PC::PC(const std::string &name) :
 PC::~PC() {
 }
 
-int PC::id() const {
+std::string PC::id() const {
 	return my_id_;
 }
 
 bool PC::is_connected() const {
-	return my_id_ != -1;
+	return !my_id_.empty();
 }
 
 const Peers& PC::peers() const {
@@ -68,7 +68,7 @@ bool PC::Connect(const std::string& client_name) {
 	return true;
 }
 
-bool PC::SendHangUp(int peer_id) {
+bool PC::SendHangUp(std::string peer_id) {
 	return true;
 }
 
@@ -139,26 +139,23 @@ void PC::parseMessage(std::string *data) {
 	}
 	std::string id = data->substr(found1 + 1, found2 - (found1 + 1));
 	std::string message = data->substr(found2 + 1, data->length());
-	int the_id = atoi(id.c_str());
 	if (method.compare("MSG_FROM_PEER") == 0)
-		OnMessageFromPeer(the_id, message);
+		OnMessageFromPeer(id, message);
 	if (method.compare("BYE") == 0) {
-		callback_->OnPeerDisconnected(the_id);
+		callback_->OnPeerDisconnected(id);
 	}
 
 }
 
-void PC::OnMessageFromPeer(int peer_id, const std::string& message) {
+void PC::OnMessageFromPeer(std::string peer_id, const std::string& message) {
 	callback_->OnMessageFromPeer(peer_id, message);
 
 }
 
-bool PC::SendToPeer(int peer_id, const std::string& message) {
+bool PC::SendToPeer(std::string peer_id, const std::string& message) {
 	printf("SENDING TO %d \n %s\n", peer_id, message.c_str());
-	char* peer[5];
-	sprintf((char*) peer, "%d", peer_id);
 	std::string msg;
-	msg.append("MSG_TO_PEER;").append((char*) peer).append(";").append(message);
+	msg.append("MSG_TO_PEER;").append(peer_id.c_str()).append(";").append(message);
 	//	control_socket_->send(msg.c_str(), msg.length());
 	boost::asio::write(*control_socket_,
 			boost::asio::buffer((char*) msg.c_str(), msg.length()));

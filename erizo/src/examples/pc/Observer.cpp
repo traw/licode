@@ -34,8 +34,8 @@ void Observer::start() {
 	}
 }
 
-void Observer::processMessage(int peer_id, const std::string& message) {
-	printf("Processing Message %d, %s", peer_id, message.c_str());
+void Observer::processMessage(std::string peer_id, const std::string& message) {
+	printf("Processing Message %s, %s", peer_id, message.c_str());
 	printf("OFFER1\n");
 	std::string roap = message;
 
@@ -77,14 +77,14 @@ void Observer::OnSignedIn() {
 void Observer::OnDisconnected() {
 	pthread_exit(0);
 }
-void Observer::OnPeerConnected(int id, const std::string& name) {
+void Observer::OnPeerConnected(std::string id, const std::string& name) {
 
 }
-void Observer::OnPeerDisconnected(int peer_id) {
+void Observer::OnPeerDisconnected(std::string peer_id) {
 	receiver_->peerDisconnected(peer_id);
 
 }
-void Observer::OnMessageFromPeer(int peer_id, const std::string& message) {
+void Observer::OnMessageFromPeer(std::string peer_id, const std::string& message) {
 	printf("OnMessageFromPeer\n");
 	printf("message : %s\n", message.c_str());
 	std::string roap = message;

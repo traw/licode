@@ -1,3 +1,4 @@
+
 cmake_minimum_required(VERSION 2.6)
 
 find_package(PkgConfig)
@@ -25,6 +26,19 @@ if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
   if (CXX_VERSION VERSION_LESS 5)
     message(FATAL_ERROR "g++ version must be >= 5 and is ${CXX_VERSION}")
   endif()
+endif()
+
+set(DEFAULT_BUILD_TYPE "Debug")
+if(NOT CMAKE_BUILD_TYPE)
+	set(CMAKE_BUILD_TYPE ${CMAKE_BUILD_TYPE})
+endif()
+
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+	message(STATUS "Generating DEBUG project")
+	set(CMAKE_CXX_FLAGS "-g -Wall -std=c++11")
+else()
+  message(STATUS "Generating RELEASE project")
+  set(CMAKE_CXX_FLAGS "-Wall -O3 -std=c++11")
 endif()
 
 option (COMPILE_EXAMPLES "COMPILE_EXAMPLES" OFF)
@@ -57,7 +71,7 @@ add_custom_target(lint
 #global variable
 set(THIRD_PARTY_INCLUDE "${CMAKE_CURRENT_SOURCE_DIR}/../../build/libdeps/build/include/")
 set(THIRD_PARTY_LIB "${CMAKE_CURRENT_SOURCE_DIR}/../../build/libdeps/build/lib/")
-
+include_directories(${THIRD_PARTY_INCLUDE})
 ## Depencencies
 
 # GLIB

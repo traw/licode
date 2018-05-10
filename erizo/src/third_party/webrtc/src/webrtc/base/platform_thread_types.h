@@ -23,7 +23,7 @@ namespace rtc {
 #if defined(WEBRTC_WIN)
 typedef DWORD PlatformThreadId;
 typedef DWORD PlatformThreadRef;
-#elif defined(WEBRTC_POSIX)
+#elif defined(WEBRTC_POSIX) || defined(WEBRTC_LINUX)
 typedef pid_t PlatformThreadId;
 typedef pthread_t PlatformThreadRef;
 #endif

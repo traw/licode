@@ -4,6 +4,7 @@ extern "C" {
 #include <r_errors.h>
 #include <async_wait.h>
 #include <async_timer.h>
+#include <sys/time.h>
 }
 
 #include <chrono>  // NOLINT

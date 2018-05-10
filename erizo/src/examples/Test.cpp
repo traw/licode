@@ -1,10 +1,13 @@
 #include <iostream>
+#include <memory>
 #include <stdio.h>
 
 #include <boost/thread.hpp>
 #include <boost/thread/mutex.hpp>
 
 #include "Test.h"
+
+#include <MediaDefinitions.h>
 
 using boost::asio::ip::udp;
 
@@ -66,8 +69,8 @@ Test::~Test() {
 	//sock->disconnect();
 }
 
-void Test::receiveRawData(unsigned char*data, int len) {
-	printf("decoded data %d\n", len);
+void Test::receiveRawData(const RawDataPacket& packet) {
+	printf("decoded data %d\n", packet.length);
 	return;
 }
 
@@ -92,7 +95,8 @@ void Test::rec() {
 		memset(buff, 0, 2000);
 //
 		a = socket_->receive(boost::asio::buffer(buff, 2000));
-		ip->receiveVideoData(buff, a);
+		std::shared_ptr<DataPacket> vidPkt = std::make_shared<DataPacket>(0, buff, a, VIDEO_PACKET);
+		ip->deliverVideoData(vidPkt);
 //		printf("********* RECEPCIÓN *********\n");
 //		printf("Bytes = %d\n", a);
 //

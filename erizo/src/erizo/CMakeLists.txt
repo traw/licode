@@ -4,14 +4,8 @@ project (ERIZO)
 
 set(ERIZO_VERSION_MAJOR 0)
 set(ERIZO_VERSION_MINOR 1)
-if(${ERIZO_BUILD_TYPE} STREQUAL "debug")
-  message("Generating DEBUG project")
-  set(CMAKE_CXX_FLAGS "-g -Wall -std=c++11 ${ERIZO_CMAKE_CXX_FLAGS}")
-else()
-  message("Generating RELEASE project")
-  set(CMAKE_CXX_FLAGS "-g -Wall -O3 -std=c++11 ${ERIZO_CMAKE_CXX_FLAGS}")
-endif()
 
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DWEBRTC_POSIX")
 
 include_directories("${ERIZO_SOURCE_DIR}" "${THIRD_PARTY_INCLUDE}" "${NICER_INCLUDE}")
 

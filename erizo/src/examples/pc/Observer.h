@@ -17,9 +17,9 @@ public:
 	~Observer();
 	void OnSignedIn(); // Called when we're logged on.
 	void OnDisconnected();
-	void OnPeerConnected(int id, const std::string& name);
-	void OnPeerDisconnected(int peer_id);
-	void OnMessageFromPeer(int peer_id, const std::string& message);
+	void OnPeerConnected(std::string id, const std::string& name);
+	void OnPeerDisconnected(std::string peer_id);
+	void OnMessageFromPeer(std::string peer_id, const std::string& message);
 	void OnMessageSent(int err);
 	void wait();
 
@@ -31,7 +31,7 @@ public:
 private:
 	void init();
 	void start();
-	void processMessage(int peerid, const std::string& message);
+	void processMessage(std::string peerid, const std::string& message);
 
 	PC *pc_;
 	boost::thread m_Thread_;

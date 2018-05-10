@@ -11,8 +11,9 @@ CURRENT_DIR=`pwd`
 LIB_DIR=$BUILD_DIR/libdeps
 PREFIX_DIR=$LIB_DIR/build/
 NVM_CHECK="$PATHNAME"/checkNvm.sh
-FAST_MAKE=''
-
+FAST_MAKE='-j6'
+FAST_BUILD='env JOBS=6'
+      
 
 export ERIZO_HOME=$ROOT/erizo
 
