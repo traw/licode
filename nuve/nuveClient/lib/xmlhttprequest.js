@@ -8,7 +8,6 @@
  *
  * @todo SSL Support
  * @author Dan DeFelippi <dan@driverdan.com>
- * @contributor David Ellis <d.f.ellis@ieee.org>
  * @license MIT
  */
 'use strict';
